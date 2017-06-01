@@ -75,6 +75,7 @@ if __name__ == '__main__':
     root = Tk()
     root.title('Patcher')
 
-    app = PatcherApplication(root, None).pack(side="top", fill="both", expand=True)
+    controller = OB1(calibrate=True)
+    app = PatcherApplication(root, controller).pack(side="top", fill="both", expand=True)
     root.mainloop()
 

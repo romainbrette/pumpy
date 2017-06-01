@@ -22,7 +22,7 @@ class RecorderApplication(Frame):
         '''
         Frame.__init__(self, master)
         self.master = master
-
+        self.controller = controller
         self.button_text = StringVar('')
         Button(self, textvariable=self.button_text, command=self.record).pack()
         self.button_text.set('Record')
@@ -43,14 +43,14 @@ class RecorderApplication(Frame):
     def sample(self):
         if self.isrecording:
             print "recording"
-            self.measurement.append(0.) # Here the actual measurement
+            self.measurement.append(self.controller.get_pressure()) # Here the actual measurement
             self.master.after(50, self.sample)
 
 if __name__ == '__main__':
     root = Tk()
     root.title('Pressure recorder')
-
-    app = RecorderApplication(root, None).pack(side="top", fill="both", expand=True)
+    controller = OB1()
+    app = RecorderApplication(root, controller).pack(side="top", fill="both", expand=True)
 
     root.mainloop()
 
