@@ -43,7 +43,9 @@ class RecorderApplication(Frame):
     def sample(self):
         if self.isrecording:
             print "recording"
-            self.measurement.append(self.controller.get_pressure()) # Here the actual measurement
+            pressure = self.controller.get_pressure()
+            print pressure
+            self.measurement.append(pressure) # Here the actual measurement
             self.master.after(50, self.sample)
 
 if __name__ == '__main__':

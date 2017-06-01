@@ -46,8 +46,7 @@ class OB1(object):
         set_channel = int(port)  # convert to int
         set_channel = c_int32(port)  # convert to c_int32
         get_pressure = c_double()
-        error = OB1_Get_Press(self.instr_ID.value, set_channel, 1, byref(self.calib), byref(get_pressure),
-                              1000)  # Acquire_data =1 -> Read all the analog value
+        error =  OB1_Get_Sens_Data(self.instr_ID.value, set_channel, 1, byref(get_pressure))  # Acquire_data =1 -> Read all the analog value
         print('error (get_pressure): ', error)
         return get_pressure.value
 
