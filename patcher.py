@@ -32,7 +32,7 @@ class PatcherApplication(Frame):
         Button(self, text='Break in', command=self.break_in).pack()
         self.pressure_label = Label(self, text='')
         self.pressure_label.pack()
-        self.high_pressure() # We start with high pressure
+        self.release() # We start with 0 pressure
 
     def update_pressure(self, pressure):
         self.pressure = pressure
