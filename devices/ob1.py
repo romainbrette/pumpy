@@ -6,8 +6,9 @@ import sys
 from ctypes import *
 from array import array
 
-sys.path.append('C:\Users\patch\Elveflow SDK V3_01_04\python_64'.encode('utf-8'))
-sys.path.append('C:\Users\patch\Elveflow SDK V3_01_04\python_64\DLL64'.encode('utf-8'))
+sys.path.append(os.path.expanduser(r'~\Elveflow SDK V3_01_04\python_64').encode('utf-8'))
+sys.path.append(os.path.expanduser(r'~\Elveflow SDK V3_01_04\python_64\DLL64').encode('utf-8'))
+
 from Elveflow64 import *
 
 __all__ = ['OB1']
