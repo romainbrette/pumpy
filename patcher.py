@@ -7,7 +7,7 @@ from Tkinter import *
 from devices import *
 from numpy import *
 
-verbose = True
+verbose = False
 
 class PatcherApplication(Frame):
     '''
@@ -30,14 +30,22 @@ class PatcherApplication(Frame):
         Button(self, text='Seal', command=self.seal).pack()
         Button(self, text='Release', command=self.release).pack()
         Button(self, text='Break in', command=self.break_in).pack()
-        self.pressure_label = Label(self, text='')
-        self.pressure_label.pack()
+        self.pressure_string = StringVar()
+        pressure_entry = Entry(self, textvariable=self.pressure_string)
+        pressure_entry.bind("<Return>", self.pressure_change)
+        pressure_entry.pack()
+        #self.pressure_label = Label(self, text='')
+        #self.pressure_label.pack()
         self.release() # We start with 0 pressure
+
+    def pressure_change(self, e):
+        self.update_pressure(int(self.pressure_string.get()))
 
     def update_pressure(self, pressure):
         self.pressure = pressure
         self.controller.set_pressure(self.pressure)
-        self.pressure_label['text'] = 'Pressure: {}mbar'.format(self.pressure)
+        #self.pressure_label['text'] = 'Pressure: {}mbar'.format(self.pressure)
+        self.pressure_string.set(pressure)
 
     def high_pressure(self):
         if verbose:
@@ -60,7 +68,7 @@ class PatcherApplication(Frame):
         # Release the pressure
         if verbose:
             print "Releasing"
-            self.update_pressure(0)
+        self.update_pressure(0)
         # -15 to -20 in Kodandaramaiah paper?
 
     def break_in(self):
