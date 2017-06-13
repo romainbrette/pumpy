@@ -27,7 +27,7 @@ class OB1(object):
         _check_error('Initialization', error)
 
         # add one analog flow sensor
-        error = OB1_Add_Sens(self.instr_ID, 1, 4, 0, 1)
+        error = OB1_Add_Sens(self.instr_ID, 1, 5, 0, 1) # should be 8 not 5, but doesn't work
         _check_error('Adding analog flow sensor', error)
 
         calib_path = os.path.expanduser(r'~\ob1_calibration.txt')
