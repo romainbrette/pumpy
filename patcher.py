@@ -6,8 +6,22 @@ Pressures
 from Tkinter import *
 from devices import *
 from numpy import *
+import threading
+import inputs
 
 verbose = False
+
+class GamepadReader(threading.Thread):
+    def __init__(self, event_container, gamepad):
+        self.event_container = event_container
+        self.gamepad = gamepad
+        super(GamepadReader, self).__init__()
+
+    def run(self):
+        while True:
+            event = self.gamepad.read()[0]
+            if event.code in ['ABS_X', 'ABS_Y', 'BTN_SOUTH']:
+                self.event_container.append(event)
 
 class PatcherApplication(Frame):
     '''
@@ -37,6 +51,28 @@ class PatcherApplication(Frame):
         #self.pressure_label = Label(self, text='')
         #self.pressure_label.pack()
         self.release() # We start with 0 pressure
+
+        gamepad = inputs.devices.gamepads[0]
+        self.event_container = []
+        reader = GamepadReader(self.event_container, gamepad)
+        reader.start()
+        self.after(100, self.update_gamepad)
+
+    def update_gamepad(self):
+        for event in self.event_container:
+            sign = -1 if event.state < 0 else 1
+            if abs(event.state) < 4096:
+                state = 0
+            else:
+                state = int(round((abs(event.state) - 4096)/ 1792.) * sign)
+            if event.code == 'ABS_X':
+                self.speed_x = state
+            elif event.code == 'ABS_Y':
+                self.speed_y = state
+            elif event.code == 'BTN_SOUTH':
+                self.break_in()
+        self.event_container[:] = []
+        self.after(100, self.update_gamepad)
 
     def pressure_change(self, e):
         self.update_pressure(int(self.pressure_string.get()))
