@@ -66,3 +66,7 @@ class OB1(object):
         set_pressure = c_double(pressure)  # convert to c_double
         error = OB1_Set_Press(self.instr_ID.value, set_channel, set_pressure, byref(self.calib), 1000)
         _check_error('Setting pressure', error)
+
+
+if __name__ == '__main__':
+    ob1 = OB1(calibrate = True)
