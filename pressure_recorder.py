@@ -47,7 +47,7 @@ class RecorderApplication(Frame):
         if self.isrecording:
             pressure = self.controller.measure()
             self.pressure_label['text'] = 'Pressure: {:.2f}mbar'.format(pressure)
-            print pressure
+            print pressure,'mbar = ',pressure/1000*14.5,'psi'
             self.measurement.append(pressure)
             self.master.after(50, self.sample)
 

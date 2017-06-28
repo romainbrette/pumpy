@@ -20,7 +20,7 @@ class GamepadReader(threading.Thread):
     def run(self):
         while True:
             event = self.gamepad.read()[0]
-            if event.code in ['ABS_X', 'ABS_Y', 'BTN_SOUTH']:
+            if event.code in ['ABS_X', 'ABS_Y', 'BTN_SOUTH', 'BTN_NORTH', 'BTN_WEST', 'BTN_EAST']:
                 self.event_container.append(event)
 
 class PatcherApplication(Frame):
@@ -56,6 +56,8 @@ class PatcherApplication(Frame):
         self.event_container = []
         reader = GamepadReader(self.event_container, gamepad)
         reader.start()
+        self.speed_x=0
+        self.speed_y=0
         self.after(100, self.update_gamepad)
 
     def update_gamepad(self):
@@ -71,6 +73,15 @@ class PatcherApplication(Frame):
                 self.speed_y = state
             elif event.code == 'BTN_SOUTH':
                 self.break_in()
+            elif event.code == 'BTN_NORTH':
+                self.nearing()
+            elif event.code == 'BTN_WEST':
+                self.release()
+            elif event.code == 'BTN_EAST':
+                self.seal()
+        if self.speed_y!=0:
+            self.update_pressure(self.pressure+self.speed_y/4.)
+
         self.event_container[:] = []
         self.after(100, self.update_gamepad)
 
